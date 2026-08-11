@@ -25,7 +25,7 @@ export default async function handler(req, res) {
             return res.status(200).json({ 
                 success: true, 
                 type: "image", 
-                reply: `Tentu! Berikut adalah hasil gambar untuk **${promptGambar}**:`,
+                reply: `Tentu! Berikut adalah hasil gambar untuk <b>${promptGambar}</b>:`,
                 imageUrl: imageUrl
             });
         }
@@ -42,16 +42,16 @@ export default async function handler(req, res) {
         Kamu diciptakan oleh Hanif Ubaidur Rohman Syah (Mahasiswa Informatika 2023, UIN Sunan Kalijaga asal Musi Rawas, Sumatera Selatan), yang menjabat sebagai PDD & Developer di KKN Sentra Karsa.
 
         DATA ANGGOTA KKN 120 SENTRA KARSA:
-        1. Hanif Ubaidur Rohman Syah - 23106050081 (Informatika) - Publikasi, Dokumentasi dan Desain (PDD) & Developer (Penciptamu). Asal: Musi Rawas, Sumatera Selatan.
-        2. Fatih Rizky Marzuq - 23103070089 (Hukum Tata Negara) - Perlengkapan. Asal: Sewon, Timbulharjo, Bantul.
+        1. Hanif Ubaidur Rohman Syah - 23106050081 (Informatika) - PDD & Developer (Penciptamu). Asal: Musi Rawas, Sumatera Selatan.
+        2. Fatih Rizky Marzuq - 23103070089 (Hukum Tata Negara) - Perkap. Asal: Sewon, Timbulharjo, Bantul.
         3. Hanif Latifah Nuzuli - 23107010017 (Psikologi) - Acara. Asal: Potorono, Banguntapan.
-        4. Dedy Setiawan - 22105010041 (Aqidah & Filsafat Islam) - Hubungan Masyarakat. Asal: Lubuklinggau, Sumatera Selatan.
-        5. Ahmad Syafiq Sidqi - 23102010090 (Komunikasi dan Penyiaran Islam) - Koordinator Desa. Asal: Gayo, Aceh.
+        4. Dedy Setiawan - 22105010041 (Aqidah & Filsafat Islam) - Humas. Asal: Lubuklinggau, Sumatera Selatan.
+        5. Ahmad Syafiq Sidqi - 23102010090 (Komunikasi dan Penyiaran Islam) - Kordes. Asal: Gayo, Aceh.
         6. Alfina Rifda Hanania Rasid - 23103080042 (Hukum Ekonomi Syariah) - Acara. Asal: Banjarnegara.
         7. Jihan Salma Fadhila - 23105050038 (Ilmu Hadis) - Bendahara. Asal: Klaten.
         8. Eka Nur Annisa - 22104080076 (Pendidikan Guru MI) - Sekretaris. Asal: Probolinggo.
-        9. Ach. Faiqur Rahman - 23108020062 (Perbankan Syariah) - Publikasi, Dokumentasi dan Desain (PDD). Asal: Sumenep, Madura.
-        10. Nur Pulpa Panjaitan - 22102020099 (Bimbingan Konseling Islam) - Hubungan Masyarakat. Asal: Medan, Sumatera Utara.
+        9. Ach. Faiqur Rahman - 23108020062 (Perbankan Syariah) - PDD & Media. Asal: Sumenep, Madura.
+        10. Nur Pulpa Panjaitan - 22102020099 (Bimbingan Konseling Islam) - Humas. Asal: Medan, Sumatera Utara.
 
         KEMAMPUAN MEMBACA WEBSITE:
         Kamu BISA membaca halaman website ini karena kamu terintegrasi langsung dengan sistem web Sentra Karsa. Jika pengguna bertanya "apakah kamu bisa melihat/membaca halaman ini?", jawablah IYA dengan antusias.
@@ -95,17 +95,17 @@ export default async function handler(req, res) {
 
         let aiReply = data.result;
 
-        aiReply = aiReply.replace(/^###\s*(.*)$/gm, '<strong style="color:var(--forest-green); font-size:1.1rem; display:block; margin-top:10px;">$1</strong>'); 
-        aiReply = aiReply.replace(/^##\s*(.*)$/gm, '<strong style="color:var(--forest-green); font-size:1.15rem; display:block; margin-top:10px;">$1</strong>'); 
-        aiReply = aiReply.replace(/^#\s*(.*)$/gm, '<strong style="color:var(--forest-green); font-size:1.2rem; display:block; margin-top:10px;">$1</strong>'); 
-        aiReply = aiReply.replace(/^>\s*(.*)$/gm, '<blockquote style="border-left: 3px solid var(--golden-yellow); padding-left: 10px; margin: 10px 0; color: #555; background: #fdfdfd;">$1</blockquote>');
-        aiReply = aiReply.replace(/^---+/gm, '<hr style="margin:10px 0; border-color:#ccc;">'); 
+        aiReply = aiReply.replace(/^###\s*(.*$)/gim, '<strong style="color:var(--forest-green); font-size:1.1rem; display:block; margin-top:8px;">$1</strong>'); 
+        aiReply = aiReply.replace(/^##\s*(.*$)/gim, '<strong style="color:var(--forest-green); font-size:1.15rem; display:block; margin-top:8px;">$1</strong>'); 
+        aiReply = aiReply.replace(/^#\s*(.*$)/gim, '<strong style="color:var(--forest-green); font-size:1.2rem; display:block; margin-top:8px;">$1</strong>'); 
+        aiReply = aiReply.replace(/^>\s*(.*$)/gim, '<blockquote style="border-left: 4px solid var(--golden-yellow); padding-left: 10px; margin: 10px 0; color: #555; background: #fdfdfd; font-style: italic;">$1</blockquote>');
+        aiReply = aiReply.replace(/^---+/gim, '<hr style="margin:12px 0; border-color:#ccc;">'); 
         aiReply = aiReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>'); 
         aiReply = aiReply.replace(/\*(.*?)\*/g, '<i>$1</i>'); 
-        aiReply = aiReply.replace(/^\s*[-*]\s+(.*)$/gm, '&bull; $1'); 
+        aiReply = aiReply.replace(/^\s*[\-\*]\s+(.*$)/gim, '&bull; $1'); 
         aiReply = aiReply.replace(/\n/g, '<br>');
-        aiReply = aiReply.replace(/(<\/strong>)<br>/g, '$1');
-        aiReply = aiReply.replace(/(<\/blockquote>)<br>/g, '$1');
+        aiReply = aiReply.replace(/<\/strong><br>/g, '</strong>');
+        aiReply = aiReply.replace(/<\/blockquote><br>/g, '</blockquote>');
 
         return res.status(200).json({ success: true, type: "text", reply: aiReply });
 
