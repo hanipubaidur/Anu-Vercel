@@ -47,12 +47,11 @@ B. Proker Pendukung:
 
 Gunakan seluruh data di atas untuk menjawab dengan sangat detail. Jika ditanya asal anggota, sebutkan daerahnya. Jika ditanya hal umum (coding, resep masakan, sains, dll), jawablah dengan wawasan globalmu yang tak terbatas secara rinci dan terstruktur.`;
 
-        // MASUKKAN API KEY LANGSUNG KE DALAM URL SEBAGAI QUERY PARAMETER
         const apiKey = "SentraKarsa123";
         const urlBetabotz = `https://api.betabotz.eu.org/api/search/openai-custom?apikey=${apiKey}`;
 
         const payload = {
-            apikey: apiKey, // Tetap disertakan di body untuk berjaga-jaga
+            apikey: apiKey,
             message: [
                 { role: "system", content: systemLogic },
                 { role: "user", content: message }
@@ -74,13 +73,21 @@ Gunakan seluruh data di atas untuk menjawab dengan sangat detail. Jika ditanya a
             throw new Error("Server AI (Backend) sedang sibuk. Mohon tunggu sebentar.");
         }
 
+        // BAGIAN PERBAIKAN PARSING ERROR [object Object]
         if (data.status === false || data.error || !data.result) {
-            const alasanError = data.message || data.error || "Format tidak sesuai";
-            throw new Error(`Ditolak Server: ${alasanError}`);
+            let alasanError = data.message || data.error || data;
+            
+            // Jika masih berupa Object, paksakan ubah ke string format JSON
+            if (typeof alasanError === 'object') {
+                alasanError = JSON.stringify(alasanError);
+            }
+            
+            throw new Error(`Ditolak Server Betabotz: ${alasanError}`);
         }
 
         let aiReply = data.result;
         
+        // Parsing balasan AI
         aiReply = aiReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
         aiReply = aiReply.replace(/\n/g, '<br>');
 
