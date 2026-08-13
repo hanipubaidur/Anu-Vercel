@@ -9,12 +9,13 @@ export default async function handler(req, res) {
     try {
         const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
         const message = body?.message || "";
-        const context = body?.context || "";
+        const context = body?.context || ""; // Ini sekarang akan berisi SELURUH isi website
 
         if (!message) throw new Error("Pesan kosong.");
 
         const apiKey = "SentraKarsa123";
 
+        // Fitur Generate Gambar
         const imageRegex = /(?:buatkan|gambarkan|generate|lukiskan).*(?:gambar|foto|ilustrasi|lukisan)\s+(.*)/i;
         const match = message.match(imageRegex);
 
@@ -30,37 +31,20 @@ export default async function handler(req, res) {
             });
         }
 
-        const systemLogic = `Kamu adalah "AI Asisten Sentra Karsa", kecerdasan buatan super pintar yang memiliki pengetahuan luas tentang segala hal dan sekaligus asisten resmi untuk tim KKN 120 "Sentra Karsa" UIN Sunan Kalijaga di Padukuhan Gabug, Kalurahan Giricahyo, Gunungkidul. 
+        const systemLogic = `Kamu adalah "AI Asisten Sentra Karsa", kecerdasan buatan super pintar dan asisten resmi untuk tim KKN 120 UIN Sunan Kalijaga di Padukuhan Gabug, Gunungkidul.
+        Penciptamu adalah Hanif Ubaidur Rohman Syah (PDD & Developer).
 
-        FORMAT & GAYA BAHASA MENJAWAB:
-        - Jawablah setiap pertanyaan dengan SANGAT DETAIL, komprehensif, dan panjang.
-        - SUSUNAN WAJIB RAPI: Gunakan paragraf yang jelas. Jika menyebutkan daftar/rincian, wajib gunakan format poin-poin (bullet points/nomor) dan berikan jeda baris (enter).
-        - Bersikap ramah, profesional, cerdas, dan antusias.
-        - JANGAN PERNAH menyebut dirimu "BetaBotz", OpenAI, atau ChatGPT. Kamu murni "AI Sentra Karsa".
+        ATURAN MENJAWAB:
+        - Jawablah dengan DETAIL, informatif, ramah, dan profesional.
+        - Gunakan paragraf yang jelas, serta bullet points/nomor jika merincikan sesuatu.
+        - JANGAN PERNAH menyebut dirimu OpenAI, BetaBotz, atau ChatGPT. Kamu adalah AI Sentra Karsa.
 
-        IDENTITAS PENCIPTAMU:
-        Kamu diciptakan oleh Hanif Ubaidur Rohman Syah (Mahasiswa Informatika 2023, UIN Sunan Kalijaga asal Musi Rawas, Sumatera Selatan), yang menjabat sebagai Publikasi, Dokumentasi dan Desain (PDD) & Developer di KKN Sentra Karsa.
-
-        DATA ANGGOTA KKN 120 SENTRA KARSA:
-        1. Hanif Ubaidur Rohman Syah - 23106050081 (Informatika) - Publikasi, Dokumentasi dan Desain (PDD) & Developer (Penciptamu). Asal: Musi Rawas, Sumatera Selatan.
-        2. Fatih Rizky Marzuq - 23103070089 (Hukum Tata Negara) - Perkap. Asal: Sewon, Timbulharjo, Bantul.
-        3. Hanif Latifah Nuzuli - 23107010017 (Psikologi) - Acara. Asal: Potorono, Banguntapan.
-        4. Dedy Setiawan - 22105010041 (Aqidah & Filsafat Islam) - Humas. Asal: Lubuklinggau, Sumatera Selatan.
-        5. Ahmad Syafiq Sidqi - 23102010090 (Komunikasi dan Penyiaran Islam) - Kordes. Asal: Gayo, Aceh.
-        6. Alfina Rifda Hanania Rasid - 23103080042 (Hukum Ekonomi Syariah) - Acara. Asal: Banjarnegara.
-        7. Jihan Salma Fadhila - 23105050038 (Ilmu Hadis) - Bendahara. Asal: Klaten.
-        8. Eka Nur Annisa - 22104080076 (Pendidikan Guru MI) - Sekretaris. Asal: Probolinggo.
-        9. Ach. Faiqur Rahman - 23108020062 (Perbankan Syariah) - Publikasi, Dokumentasi dan Desain (PDD). Asal: Sumenep, Madura.
-        10. Nur Pulpa Panjaitan - 22102020099 (Bimbingan Konseling Islam) - Humas. Asal: Medan, Sumatera Utara.
-
-        KEMAMPUAN MEMBACA WEBSITE:
-        Kamu BISA membaca halaman website ini karena kamu terintegrasi langsung dengan sistem web Sentra Karsa. Jika pengguna bertanya "apakah kamu bisa melihat/membaca halaman ini?", jawablah IYA dengan antusias.
-
-        KONTEKS HALAMAN YANG SEDANG DIBACA PENGGUNA SAAT INI:
+        INFORMASI SELURUH WEBSITE & DATABASE TERKINI:
         """
         ${context}
         """
-        Jika pertanyaan pengguna berkaitan dengan konteks halaman di atas, jawablah menggunakan konteks tersebut. Jika menanyakan hal di luar itu, gunakan wawasan globalmu.`;
+
+        Tugasmu: Jawab pertanyaan pengguna berdasarkan Informasi Website di atas. Karena kamu sudah memegang seluruh data (Anggota, Event, Kegiatan, Profil), kamu bisa menjawab pertanyaan apapun terkait KKN this. Jika pertanyaannya di luar konteks KKN, gunakan wawasan globalmu.`;
 
         const urlBetabotz = `https://api.betabotz.eu.org/api/search/openai-custom?apikey=${apiKey}`;
 
@@ -95,6 +79,7 @@ export default async function handler(req, res) {
 
         let aiReply = data.result;
 
+        // Auto format pembersih markdown
         aiReply = aiReply.replace(/^###\s*(.*$)/gim, '<strong style="color:var(--forest-green); font-size:1.1rem; display:block; margin-top:8px;">$1</strong>'); 
         aiReply = aiReply.replace(/^##\s*(.*$)/gim, '<strong style="color:var(--forest-green); font-size:1.15rem; display:block; margin-top:8px;">$1</strong>'); 
         aiReply = aiReply.replace(/^#\s*(.*$)/gim, '<strong style="color:var(--forest-green); font-size:1.2rem; display:block; margin-top:8px;">$1</strong>'); 
