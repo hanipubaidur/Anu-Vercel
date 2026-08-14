@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     try {
         const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
         const message = body?.message || "";
-        const context = body?.context || ""; // Ini sekarang akan berisi SELURUH isi website
+        const context = body?.context || "";
 
         if (!message) throw new Error("Pesan kosong.");
 
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
         ${context}
         """
 
-        Tugasmu: Jawab pertanyaan pengguna berdasarkan Informasi Website di atas. Karena kamu sudah memegang seluruh data (Anggota, Event, Kegiatan, Profil), kamu bisa menjawab pertanyaan apapun terkait KKN this. Jika pertanyaannya di luar konteks KKN, gunakan wawasan globalmu.`;
+        Tugasmu: Jawab pertanyaan pengguna berdasarkan Informasi Website di atas. Karena kamu sudah memegang seluruh data (Anggota, Event, Kegiatan, Profil), kamu bisa menjawab pertanyaan apapun terkait KKN this . Jika pertanyaannya di luar konteks KKN, gunakan wawasan globalmu.`;
 
         const urlBetabotz = `https://api.betabotz.eu.org/api/search/openai-custom?apikey=${apiKey}`;
 
